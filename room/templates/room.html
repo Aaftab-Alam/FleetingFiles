@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta name="description" content=""> 
+        <meta name="author" content=""> 
+        <title>Room</title>          
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik+Glitch&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+    </head>     
+    <body style="margin: 0px;">
+        <header style="background-color: #0e0e0e; padding: 8px;">
+            <h1 class="fleet" style="color:white;">📁Fleeting Files</h1>
+        </header>
+        <div class="upload-button">
+            <button>Upload</button>
+        </div>
+        <div style="margin: 12px;">
+            <h3 style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #5b5b5b;">Available Files</h3>
+            <hr>
+            <div class="file-container">
+                <div class="file-display">
+                    <img src="https://pinegrow.com/placeholders/img13.jpg">
+                    <p>landscape.jpg</p>
+                </div>
+            </div>
+        </div>
+    </body>     
+</html>

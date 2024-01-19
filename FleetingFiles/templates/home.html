@@ -1,13 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <button href="/create-room">Create room</button>
-    <button href="/join-room">Join room</button>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>New page</title>
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style1.css' %}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik+Glitch&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+    </head>
+    <body>
+        <div class="parent">
+            <div class="child">
+                <h1>📁FleetingFiles</h1>
+                <p id="p-room">A room is a place where one can share files with others who are in the same room. Create your own room or join an existing room</p>
+                <div class="button-div">
+                    <a href="room/create_room"><button class="btn-primary">Create Room</button></a>
+                    <a href="room/join_room"><button class="btn-secondary">Join Room</button></a>
+                </div>
 
-</body>
+            </div>
+            <!-- <div data-empty-placeholder style="display:flex; width: 689px; height: 690px; border-radius: 356px; background: linear-gradient(90deg, #136a8a, #267871); opacity: 0.2; aspect-ratio: 21; position: absolute; z-index: 29; left: -199px; top: -258px;"></div> -->
+
+            <!-- <div style="width: 689px; height: 690px; border-radius: 356px; background: linear-gradient(90deg, #83a4d4, #b6fbff); opacity: 0.2; aspect-ratio: 21; position: absolute; z-index: 29; left: -109px; top: -332px; display: flex; flex-shrink: 42; flex-grow: 48; flex-basis: 2px; order: -28; float: left;"></div> -->
+        </div>
+
+        <div data-empty-placeholder></div>
+    </body>
 </html>

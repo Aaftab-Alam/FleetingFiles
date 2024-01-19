@@ -12,3 +12,15 @@ def upload(request):
                 context['url'] = fs.url(name)
     return render(request, 'uploader.html',context)
 
+
+def create_room(request):
+     return render(request, "create_room.html")
+
+
+def join_room(request):
+     return render(request, "join_room.html")
+
+def room(request):
+     return render(request, "room.html")
+
+

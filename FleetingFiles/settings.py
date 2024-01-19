@@ -119,6 +119,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'FleetingFiles/static'),
     os.path.join(BASE_DIR, 'room/static'),
 ]
 
