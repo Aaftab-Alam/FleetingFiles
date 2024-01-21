@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
+
 from django.core.files.storage import FileSystemStorage
+
+from .forms import CreateRoom, LoginRoom
+from .models import Room
 
 
 def upload(request):
@@ -14,6 +18,20 @@ def upload(request):
 
 
 def create_room(request):
+     if request.method == 'POST':
+        print(request.session.is_empty())
+        form = CreateRoom(request.POST)
+        if form.is_valid():
+            room = Room(
+                rname=form.cleaned_data['rname'],
+                rpass=form.cleaned_data['rpass']
+            )
+            room.save()
+            request.session['rname']=str(room.rname)
+            print("Room Created")
+            return HttpResponse("<h1>Room Created</h1>")
+        else:
+             return HttpResponse("Room Creation failed")
      return render(request, "create_room.html")
 
 
