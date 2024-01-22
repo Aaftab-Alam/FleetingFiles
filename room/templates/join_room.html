@@ -13,11 +13,12 @@
     </head>     
     <body class="login">
         <div>
-            <form method="post">
+            <form method="POST" action ="{% url 'join_room' %}">
+                {% csrf_token %}
                 <h1 class="fleet">📁Fleeting Files</h1>
                 <input class="rname" placeholder="Room Name" name="rname" type="text"><br/>
                 <input class="rpass" placeholder="Room Password" name="rpass" type="password"><br/>
-                <button>Join</button>
+                <button type="submit">Join</button>
             </form>
         </div>
     </body>     
