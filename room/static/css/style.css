@@ -66,12 +66,11 @@ form input.rpass {
 }
 
 button {
-    border-width: 0px;
     border-radius: 5px;
     padding: 10px;
     width: 100px;
     background: linear-gradient(90deg, #ec008c, #fc6767);
-    /* border-color: rgba(0, 0, 0, 0); */
+    border-color: rgba(0, 0, 0, 0);
     color: #ffffff;
 }
 
@@ -109,6 +108,9 @@ main {
     column-gap: 28px;
     row-gap: 23px;
     flex-wrap: wrap;
+    min-width: 245px;
+
+    /* min-width: 267px */
 }
 
 .file-display {
@@ -133,4 +135,66 @@ main {
     color: #ffffff;
     font-size: 13px;
     text-align: center;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.back-container {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.front-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(46, 46, 46, 0.63);
+}
+
+.upload-main {
+    display: flex;
+    padding: 23px;
+    width: 50%;
+    height: 33%;
+    border-radius: 9px;
+    min-width: 164px;
+    position: fixed;
+    max-width: 422px;
+    background-color: rgba(243, 243, 243, 0.97);
+    
+}
+
+.upload-main form{
+    width: 100%;
+    height:100%;
+    display: flex; 
+    align-items:center; 
+    justify-content:center;
+    flex-wrap: wrap;
+
+}
+
+#cross {
+    cursor: pointer;
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-family: 'ABeeZee', sans-serif;
+    font-weight: 400;
+    opacity: 0.5;
+    font-size: 22px;
+}
+
+#cross:hover {
+    opacity: 1;
+    color: rgb(221, 40, 40);
 }

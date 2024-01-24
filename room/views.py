@@ -4,18 +4,18 @@ from .forms import CreateRoom, LoginRoom
 from .models import Room, File
 
 
-def upload(request):
-    context = {}
-    if request.method == "POST":
-        request_file = request.FILES['document'] if 'document' in request.FILES else None
-        if request_file:
-                fs = FileSystemStorage()
-                name = fs.save(request_file.name, request_file)
-                # print(name, fs.url(name), fs.path(name))
-                context['url'] = fs.url(name)
-    return render(request, 'uploader.html',context)
+# def upload(request):
+#     context = {}
+#     if request.method == "POST":
+#         request_file = request.FILES['document'] if 'document' in request.FILES else None
+#         if request_file:
+#                 fs = FileSystemStorage()
+#                 name = fs.save(request_file.name, request_file)
+#                 # print(name, fs.url(name), fs.path(name))
+#                 context['url'] = fs.url(name)
+#     return render(request, 'uploader.html',context)
 
-def upload2(request):
+def upload(request):
      context={}
      if request.method== "POST":
           request_file = request.FILES['document'] if 'document' in request.FILES else None

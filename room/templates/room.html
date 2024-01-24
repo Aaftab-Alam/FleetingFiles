@@ -7,27 +7,57 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
         <meta name="description" content=""> 
         <meta name="author" content=""> 
-        <title>Room</title>          
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <title>Room</title>         
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik+Glitch&display=swap">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap">
     </head>     
     <body style="margin: 0px;">
-        <header style="background-color: #0e0e0e; padding: 8px;">
-            <h1 class="fleet" style="color:white;">📁Fleeting Files</h1>
-        </header>
-        <div class="upload-button">
-            <button>Upload</button>
-        </div>
-        <div style="margin: 12px;">
-            <h3 style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #5b5b5b;">Available Files</h3>
-            <hr>
-            <div class="file-container">
-                <div class="file-display">
-                    <img src="https://pinegrow.com/placeholders/img13.jpg">
-                    <p>landscape.jpg</p>
+        <div class="container">
+            <div class="back-container">
+                <header style="background-color: #0e0e0e; padding: 8px;">
+                    <h1 class="fleet" style="color:white;">📁Fleeting Files</h1>
+                </header>
+                <div class="upload-button" style="position: fixed;">
+                    <button onclick="myFunction()">Upload</button>
+                </div>
+                <div style="margin: 12px;">
+                    <h3 style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #5b5b5b;">Available Files</h3>
+                    <hr>
+                    <div style="width: 97%; display: flex;">
+                        <div class="file-container">
+                            <div class="file-display">
+                                <img src="https://pinegrow.com/placeholders/img13.jpg">
+                                <p>landscape.jpg</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="front-container" id="fcont" style="display: none;">
+                <div class="upload-main">
+                    <label id="cross" onclick="myFunction()">x</label>
+                <form  method="POST" action="{% url 'upload' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    
+                        <input type="file" name="document">
+                        <button type="submit">Upload</button>
+                </form>
+            </div>
+            </div>
         </div>
+        <script>
+            function myFunction() {
+            var x = document.getElementById("fcont");
+            if (x.style.display == "none") {
+                x.style.display = "flex";
+            } else {
+                x.style.display = "none";
+            }
+            }
+        </script>
     </body>     
 </html>
