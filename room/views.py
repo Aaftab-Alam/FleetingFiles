@@ -1,7 +1,16 @@
+import os
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.files.storage import FileSystemStorage
+from django.http import FileResponse
 from .forms import CreateRoom, LoginRoom
 from .models import Room, File
+from django.conf import settings
+
+
+# left over work:-
+# add leave_room button
+# icon or preview for files
+
 
 
 # def upload(request):
@@ -16,24 +25,35 @@ from .models import Room, File
 #     return render(request, 'uploader.html',context)
 
 def upload(request):
-     context={}
      if request.method== "POST":
           request_file = request.FILES['document'] if 'document' in request.FILES else None
           room= Room.objects.get(rname=request.session['rname'])
           if request_file:
                fs= FileSystemStorage()
                name= fs.save(request_file.name, request_file)
-
                file_info = File(
                     room= room,
+                    name=name,
                     file=fs.url(name)
                )
                file_info.save()
-               return HttpResponse("File uploaded successfully")
+               return redirect("room")
           return HttpResponse("No file found")
-     return render(request, 'uploader.html',context)
+     return render(request, 'uploader.html')
           
-
+def download_file(request, file_name):
+     if 'rname' in request.session:
+          requested_file=File.objects.get(name=file_name)
+          if (requested_file.room.rname ==  request.session['rname']):
+               file_path = os.path.join(settings.MEDIA_ROOT, file_name)  # this will route the path "./room/media/file" to "./media/file"
+               file = open(file_path, 'rb')
+               response = FileResponse(file)
+               response['Content-Type'] = 'application/octet-stream'
+               response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+               return response
+          else:
+               return HttpResponse("File not found")
+     return redirect('join_room')
 
 
 def create_room(request):
@@ -77,7 +97,11 @@ def leave_room(request):
 
 def room(request):
      if 'rname' in request.session:
-          return render(request, "room.html")
+          rname = request.session['rname']
+          room = Room.objects.get(rname=rname)
+          files = File.objects.filter(room=room)
+          print(files)
+          return render(request, "room.html", {'files':files})
      else:
           return redirect('join_room')
      

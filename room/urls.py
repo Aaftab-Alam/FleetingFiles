@@ -5,6 +5,7 @@ from room import views
 urlpatterns = [
     path('', views.room, name="room"),
     path('upload', views.upload, name="upload"),
+    path('media/<str:file_name>/', views.download_file, name='download_file'),
     path('create_room', views.create_room, name="create_room"),
     path('join_room', views.join_room, name="join_room"),
     path('leave_room', views.leave_room, name="leave_room")

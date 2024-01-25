@@ -27,10 +27,18 @@
                     <hr>
                     <div style="width: 97%; display: flex;">
                         <div class="file-container">
-                            <div class="file-display">
-                                <img src="https://pinegrow.com/placeholders/img13.jpg">
-                                <p>landscape.jpg</p>
-                            </div>
+                            {% for file in files %}
+                                <a href= " .{{ file.file }} " style="text-decoration: none;">
+                                <div class="file-display">
+                                    <img src="https://pinegrow.com/placeholders/img13.jpg">
+                                    {% if file.name|length <= 18 %}
+                                    <p>{{ file.name }}</marquee></p>
+                                    {% else %}
+                                    <p><marquee width="91px" scrollamount="3">{{ file.name }}</marquee></p>
+                                    {% endif %}
+                                </div>
+                                </a>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
