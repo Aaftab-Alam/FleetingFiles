@@ -7,9 +7,8 @@ from .models import Room, File
 from django.conf import settings
 
 
-# left over work:-
-# add leave_room button
-# icon or preview for files
+# left over work
+# duplicate name room not allowed
 
 
 
@@ -100,8 +99,9 @@ def room(request):
           rname = request.session['rname']
           room = Room.objects.get(rname=rname)
           files = File.objects.filter(room=room)
+          rname= request.session['rname']
           print(files)
-          return render(request, "room.html", {'files':files})
+          return render(request, "room.html", {'files':files,'rname':rname})
      else:
           return redirect('join_room')
      
