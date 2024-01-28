@@ -44,7 +44,7 @@
                             {% for file in files %}
                                 <a href= " .{{ file.file }} " style="text-decoration: none;">
                                 <div class="file-display">
-                                    <img src="https://s3.amazonaws.com/cloud.kumu.io/accounts/210173/0a6f2aaa-73d5-4d0c-9d88-f98aa7032f5b.png">
+                                    <img src="{% static 'images/file_icon.png' %}">
                                     {% if file.name|length <= 20 %}
                                     <p>{{ file.name }}</p>
                                     {% else %}
