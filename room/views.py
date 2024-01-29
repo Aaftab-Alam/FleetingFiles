@@ -7,8 +7,7 @@ from .models import Room, File
 from django.conf import settings
 
 
-# left over work
-# duplicate name room not allowed
+
 
 
 
@@ -56,6 +55,7 @@ def download_file(request, file_name):
 
 
 def create_room(request):
+     exists='false'
      if request.method == 'POST':
         request.session.flush()
         form = CreateRoom(request.POST)
@@ -68,11 +68,16 @@ def create_room(request):
             request.session['rname']=str(room.rname)
             return redirect('room')
         else:
-             return HttpResponse("Room Creation failed")
-     return render(request, "create_room.html")
+             room=Room.objects.get(rname=request.POST.get('rname'))
+             if room:
+                  exists='Room with that name already exists !'
+             else:
+                  exists='Room creation failed'     
+     return render(request, "create_room.html",{'exists':exists})
 
 
 def join_room(request):
+     not_found='false'
      if 'rname' in request.session:
           return redirect('room')
      if request.method == 'POST':
@@ -85,9 +90,9 @@ def join_room(request):
              return redirect('room')
         
         except Room.DoesNotExist as e:
-             return HttpResponse("Room not found")
+             not_found='Invalid room name or password !'
         
-     return render(request, "join_room.html")
+     return render(request, "join_room.html",{'not_found':not_found})
 
 
 def leave_room(request):

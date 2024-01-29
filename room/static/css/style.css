@@ -248,5 +248,34 @@ header h3{
     h1.fleet{
         font-size: 30px;
     }
+
+    
 }
+
+
+@media screen and (max-width: 415px){
+    h1.fleet{
+        font-size: 25px;
+    }
+    .file-container{
+        grid-template-columns: repeat(auto-fill, minmax(156px, 1fr))
+    }
+    
+}
+@media screen and (max-width: 360px){
+    .file-container{
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr))
+    }
+    .file-display {
+        width: 145px;
+        height: 145px;
+    }
+    .file-display img {
+        width: 145px;
+        height: 126px;
+    }
+}
+
+
+
    

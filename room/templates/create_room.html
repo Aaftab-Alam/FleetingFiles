@@ -16,6 +16,9 @@
             <form method="POST" action="{% url 'create_room' %}">
                 {% csrf_token %}
                 <h1 class="fleet">📁Fleeting Files</h1>
+                {% if exists != 'false' %}
+                <p style="color:red; font-family:'Open Sans', sans-serif; font-size: 12px;">{{ exists }}</p>
+                {% endif %}
                 <input class="rname" placeholder="Room Name" name="rname" type="text"><br/>
                 <input class="rpass" placeholder="Room Password" name="rpass" type="password"><br/>
                 <button type="submit">Create</button>
