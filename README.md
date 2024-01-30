@@ -1,5 +1,5 @@
 
-# 📁Fleeting Files (WIP)
+# 📁Fleeting Files
 
 FleetingFiles is a file-sharing platform that lets you share files with multiple users in a matter of seconds. No need to log in, sign up, or enter your email address. Just create or join a room, set a password, and invite your friends. You can upload and download any file you want, as long as it is within the room’s size limit. Fleeting Files is perfect for situations where you need to quickly share files with others, such as in a college lab, a group project, or a work meeting. Fleeting Files is fast, easy, and secure.
 
