@@ -5,7 +5,7 @@ FleetingFiles is a file-sharing platform that lets you share files with multiple
 
 ## The idea
 
-I came up with the idea for Fleeting Files when I faced a problem in my college lab. I wanted to share some files with my friends, but there was no easy way to do it. All the existing file-sharing services required me to log in, enter email addresses, or share long URLs or QR codes.   
+I came up with the idea for Fleeting Files when I faced a problem in my college lab. I wanted to share some files with my friends, but there was no easy way to do it. All the existing file-sharing services that I tried required me to log in, enter email addresses, or share long URLs or QR codes.   
 
 Sometimes, our teachers wanted to share some files with us in the lab. They would share the files on WhatsApp groups, but to download them on my lab PC, I had to log in to my WhatsApp on the lab PC, which I found really unsafe.   
 

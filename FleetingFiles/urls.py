@@ -20,7 +20,7 @@ from django.urls import include
 from FleetingFiles import views 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/myadmin', admin.site.urls),
     path('',views.home, name="home"),
     path('room/',include('room.urls')),
 ]
