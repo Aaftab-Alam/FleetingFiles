@@ -2,10 +2,9 @@ import os
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse
-from .forms import CreateRoom, LoginRoom
+from .forms import CreateRoom
 from .models import Room, File
 from django.conf import settings
-
 
 def upload(request):
      if request.method== "POST":
@@ -13,20 +12,28 @@ def upload(request):
           room= Room.objects.get(rname=request.session['rname'])
           if request_file:
                fs= FileSystemStorage()
+
+               #saving the file in the folder
                name= fs.save(request_file.name, request_file)
+
+               #saving the info about the file in database
                file_info = File(
                     room= room,
                     name=name,
                     file=fs.url(name)
                )
                file_info.save()
+
                return redirect("room")
           return HttpResponse("No file found")
      return render(request, 'uploader.html')
           
 def download_file(request, file_name):
+     #validating if a user is logged in a room
      if 'rname' in request.session:
           requested_file=File.objects.get(name=file_name)
+
+          #validating if the user requesting the file is from the same room where the file is available
           if (requested_file.room.rname ==  request.session['rname']):
                file_path = os.path.join(settings.MEDIA_ROOT, file_name)  # this will route the path "./room/media/file" to "./media/file"
                file = open(file_path, 'rb')
@@ -94,9 +101,5 @@ def room(request):
           return render(request, "room.html", {'files':files,'rname':rname})
      else:
           return redirect('join_room')
-     
 
-          
-     
-
-
+#
