@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=69.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "myproject"
+version = "1.0"
+description= "FleetingFiles is a file-sharing platform that lets you share files with multiple users in a matter of seconds."
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+  {name = "Aaftab Alam", email = "aaftabalam.official29@gmail.com" }
+]
+keywords = ["File", "Sharing","Send","Receive", "Django"]
+dependencies = [
+    "django==5.0.1",
+]
+
+
+[project.urls] 
+"Homepage" = "https://bit.ly/FleetingFiles"
+"Repository" = "https://github.com/Aaftab-Alam/FleetingFiles"
+"Bug Reports" = "https://github.com/Aaftab-Alam/FleetingFiles/issues"
