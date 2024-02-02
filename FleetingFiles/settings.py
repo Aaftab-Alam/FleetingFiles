@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +29,10 @@ SECRET_KEY = 'django-insecure-i#y7q1@z=^b*6wn=*hm#7it548+s$**$huxp+$1ca5)s)t2^@o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+
+ALLOWED_HOSTS =[]
+
 
 
 # Application definition
@@ -39,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'room'
+    # 'storgaes'
 ]
 
 MIDDLEWARE = [
@@ -100,6 +107,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+#Aws configuration
+
+AWS_ACCESS_KEY_ID =os.getenv('access_key')
+AWS_SECRET_ACCESS_KEY = os.getenv('secret_key')
 
 
 # Internationalization
