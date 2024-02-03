@@ -45,7 +45,6 @@ def download_file(request, file_name):
           #validating if the user requesting the file is from the same room where the file is available
           if (requested_file.room.rname ==  request.session['rname']):
                link=generate_presigned_url(file_name)
-               print(link)
                return redirect(link)
           else:
                return HttpResponse("File not found")
