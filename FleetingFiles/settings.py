@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i#y7q1@z=^b*6wn=*hm#7it548+s$**$huxp+$1ca5)s)t2^@o'
+SECRET_KEY = os.getenv('django_secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'room'
-    # 'storgaes'
+    'room',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -114,6 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
 AWS_ACCESS_KEY_ID =os.getenv('access_key')
 AWS_SECRET_ACCESS_KEY = os.getenv('secret_key')
 
+#
+AWS_STORAGE_BUCKET_NAME = os.getenv('bucket_name')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_FILE_OVERWRITE = False
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -130,15 +135,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+STORAGE = {
+    #Media File management
+    "default":{
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+
+    #Static file management
+    "staticfiles":{
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+}
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'FleetingFiles/static'),
     os.path.join(BASE_DIR, 'room/static'),
 ]
 
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL= 'https://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+
 
 
 # Default primary key field type

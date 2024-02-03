@@ -6,6 +6,5 @@ class Room(models.Model):
 
 class File(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    name= models.CharField(max_length=500)
-    file = models.FileField(upload_to='uploads/')
+    file = models.FileField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
