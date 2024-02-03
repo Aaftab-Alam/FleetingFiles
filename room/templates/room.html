@@ -43,7 +43,7 @@
                     <div style="padding-left: 8px; padding-right: 8px;">
                         <div class="file-container">
                             {% for item in files %}
-                                <a href= " {{ item.file.url }} " style="text-decoration: none;">
+                                <a href= " media/file/{{ item.file.name }} " style="text-decoration: none;">
                                 <div class="file-display">
                                     <img src="{% static 'images/file_icon.png' %}">
                                     {% if item.file.name|length <= 20 %}

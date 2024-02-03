@@ -1,10 +1,26 @@
 import os
+import boto3
+from botocore.client import Config
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse
 from .forms import CreateRoom
 from .models import Room, File
 from django.conf import settings
+
+def generate_presigned_url(object_name):
+    s3_client = boto3.client('s3',region_name='ap-south-1',config=Config(signature_version='s3v4'), aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+    response = s3_client.generate_presigned_url(
+         'get_object', 
+         Params={
+              'Bucket': settings.AWS_STORAGE_BUCKET_NAME, 
+              'Key': object_name, 
+              "ResponseContentType":'application/octet-stream',
+              "ResponseContentDisposition": f'attachment; filename="{object_name}"',
+              },
+          ExpiresIn=10)
+    return response
+
 
 def upload(request):
      if request.method== "POST":
@@ -15,6 +31,7 @@ def upload(request):
                     room= room,
                     file=request_file
                )
+               #this will save the file to default storage configured in settings.py, we can later access the file name using object.name, and url using object.url.
                file.save()
                return redirect("room")
           return HttpResponse("No file found")
@@ -27,12 +44,9 @@ def download_file(request, file_name):
 
           #validating if the user requesting the file is from the same room where the file is available
           if (requested_file.room.rname ==  request.session['rname']):
-               file_path = os.path.join(settings.MEDIA_ROOT, file_name)  # this will route the path "./room/media/file" to "./media/file"
-               file = open(file_path, 'rb')
-               response = FileResponse(file)
-               response['Content-Type'] = 'application/octet-stream'
-               response['Content-Disposition'] = f'attachment; filename="{file_name}"'
-               return response
+               link=generate_presigned_url(file_name)
+               print(link)
+               return redirect(link)
           else:
                return HttpResponse("File not found")
      return redirect('join_room')
@@ -92,6 +106,4 @@ def room(request):
           return render(request, "room.html", {'files':files,'rname':rname})
      else:
           return redirect('join_room')
-
-#
 
