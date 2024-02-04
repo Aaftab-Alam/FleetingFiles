@@ -42,14 +42,14 @@
                     {% else %}
                     <div style="padding-left: 8px; padding-right: 8px;">
                         <div class="file-container">
-                            {% for file in files %}
-                                <a href= " .{{ file.file }} " style="text-decoration: none;">
+                            {% for item in files %}
+                                <a href= " media/file/{{ item.file.name }} " style="text-decoration: none;">
                                 <div class="file-display">
                                     <img src="{% static 'images/file_icon.png' %}">
-                                    {% if file.name|length <= 20 %}
-                                    <p>{{ file.name }}</p>
+                                    {% if item.file.name|length <= 20 %}
+                                    <p>{{ item.file.name }}</p>
                                     {% else %}
-                                    <p><marquee width="150px" scrollamount="3">{{ file.name }}</marquee></p>
+                                    <p><marquee width="150px" scrollamount="3">{{ item.file.name }}</marquee></p>
                                     {% endif %}
                                 </div>
                                 </a>
