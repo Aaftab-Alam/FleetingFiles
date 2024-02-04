@@ -1,3 +1,5 @@
+This branch is specifically designed for local execution of the application, without the necessity of configuring an AWS account or setting up an S3 bucket.
+
 
 # 📁Fleeting Files
 
