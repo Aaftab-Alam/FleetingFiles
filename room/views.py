@@ -59,7 +59,31 @@ def room(request):
           return render(request, "room.html", {'files':files,'rname':rname})
      else:
           return redirect('join_room')
+
+def delete_s3_objects(files):
+     s3 = boto3.client('s3',region_name='ap-south-1', aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+     s3.delete_objects(
+            Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+            Delete={
+                'Objects': [{'Key': obj_key.file.name} for obj_key in files],
+                'Quiet': False  # Set to True to suppress output
+            }
+        )
+     return True
      
+def delete_room(request):
+     room = Room.objects.get(rname= request.session['rname'])
+     files= File.objects.filter(room=room)
+     print(files)
+     if (delete_s3_objects(files)):
+          files.delete()
+          room.delete()
+          request.session.flush()
+          return redirect('/')
+     else:
+          return HttpResponse("Files deletion failed")
+
+
 
 def upload(request):
      if request.method== "POST":
