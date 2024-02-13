@@ -1,11 +1,13 @@
-from django.shortcuts import render, HttpResponse, redirect
-from django.contrib import messages
-from .forms import CreateRoom
-from .models import Room, File
-from django.conf import settings
+from functools import wraps
+
 import boto3
 from botocore.client import Config
-from functools import wraps
+from django.conf import settings
+from django.contrib import messages
+from django.shortcuts import HttpResponse, redirect, render
+
+from .forms import CreateRoom
+from .models import File, Room
 
 """
 Views for managing rooms and files.
@@ -28,7 +30,7 @@ Functions:
 
 def get_s3_client():
     """
-    Get an S3 client.
+    Get an S3 client to perform CRUD and more operations.
 
     Returns:
         botocore.client.S3: The S3 client instance.
@@ -171,7 +173,7 @@ def delete_s3_objects(files):
     )
     return True
 
-
+@room_required
 def delete_room(request):
     """
     Delete the current room with all the files belonging to it.
@@ -185,7 +187,6 @@ def delete_room(request):
     """
     room = Room.objects.get(rname=request.session["rname"])
     files = File.objects.filter(room=room)
-    print(files)
     if delete_s3_objects(files):
         files.delete()
         room.delete()
