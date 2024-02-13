@@ -1,6 +1,22 @@
 from django.urls import path
 from room import views
 
+"""
+URL patterns for the room app.
+
+This module defines the URL patterns for the room app, which handles various actions related to rooms.
+
+Functions:
+- room(request): Renders the room view.
+- create_room(request): Creates a new room.
+- join_room(request): Joins an existing room.
+- leave_room(request): Leaves a room.
+- upload(request): Handles file uploads.
+- download_file(request, file_name): Downloads a file from the media directory.
+- delete_room(request): Deletes a room.
+
+"""
+
 
 urlpatterns = [
     path('', views.room, name="room"),
