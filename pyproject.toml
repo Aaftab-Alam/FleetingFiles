@@ -4,17 +4,18 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "myproject"
+name = "Fleeting Files"
 version = "1.0"
 description= "FleetingFiles is a file-sharing platform that lets you share files with multiple users in a matter of seconds."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 authors = [
   {name = "Aaftab Alam", email = "aaftabalam.official29@gmail.com" }
 ]
 keywords = ["File", "Sharing","Send","Receive", "Django"]
 dependencies = [
     "django==5.0.1",
+    "redis==5.0.14.1",
 ]
 
 

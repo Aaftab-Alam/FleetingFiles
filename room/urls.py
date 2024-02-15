@@ -25,5 +25,5 @@ urlpatterns = [
     path('leave_room', views.leave_room, name="leave_room"),
     path('upload', views.upload, name="upload"),
     path('media/file/<str:file_name>/', views.download_file, name='download_file'),
-    path('delete_room', views.delete_room, name='delete_room'),
+    # path('delete_room', views.delete_room, name='delete_room'),
 ]
