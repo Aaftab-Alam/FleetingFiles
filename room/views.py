@@ -179,7 +179,7 @@ def room(request):
         room = Room.objects.get(rname=rname)
     except ObjectDoesNotExist:
         request.session.flush()
-        return HttpResponse("Room has expired!")
+        return HttpResponse('<h3 align="center" style="font-family:Open Sans">Room has expired!</h3>')
     files = File.objects.filter(room=room)
     return render(request, "room.html", {"files": files, "rname": rname})
 
@@ -247,6 +247,8 @@ def upload(request):
     request_file = request.FILES.get("document")
     if not request_file:
         return HttpResponse("No file found")
+    if request_file.size > 104857600:  # File must not be greater than 100MB
+        return HttpResponse('<h3 align="center" style="font-family:Open Sans">File size exceeds the limit of 100MB.</h3>')
 
     room = Room.objects.get(rname=request.session["rname"])
     file = File(room=room, file=request_file)
@@ -296,7 +298,7 @@ def download_file(request, file_name):
         requested_file = File.objects.get(file=file_name)
     except ObjectDoesNotExist:
         request.session.flush()
-        return HttpResponse("Room has been expired")
+        return HttpResponse('<h3 align="center" style="font-family:Open Sans">Room has been expired<h3>')
 
     # validating if the user requesting the file is from the same room where the file is available
     if requested_file.room.rname == request.session["rname"]:
