@@ -1,10 +1,15 @@
+from datetime import datetime, timedelta
 from functools import wraps
 
 import boto3
+import pytz
 from botocore.client import Config
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import HttpResponse, redirect, render
+
+from FleetingFiles.celery import app
 
 from .forms import CreateRoom
 from .models import File, Room
@@ -51,7 +56,8 @@ def get_s3_client():
 
 def room_required(view_func):
     """
-    Decorator to require a room for a view function.
+    This decorator could be used with functions where room is required in users sessions to call that function.
+    If there is no room in user's session then this session asks them to join a room.
 
     Args:
         view_func (function): The view function to be decorated.
@@ -78,10 +84,27 @@ def room_required(view_func):
 
 
 def create_room(request):
+    """
+    Create a room.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        If the request method is not POST, renders the "create_room.html" template.
+        If request methos is POST and the form is valid, a new room is created,
+        celery worker is called for automatically deleting the room after 30 minutes,
+        redirects to the "room" view.
+        Otherwise, renders the "create_room.html" template.
+
+    Raises:
+        None.
+    """
+
     if request.method != "POST":
         return render(request, "create_room.html")
 
-    request.session.flush()
+    # request.session.flush()
     form = CreateRoom(request.POST)
     if form.is_valid():
         room, created = Room.objects.get_or_create(
@@ -90,6 +113,10 @@ def create_room(request):
         )
         if created:
             request.session["rname"] = room.rname
+            delete_room.apply_async(
+                args=[room.rname],
+                eta=datetime.now(pytz.timezone("UTC")) + timedelta(minutes=30),
+            )
             return redirect("room")
 
     if form.has_error("rname", "unique"):
@@ -101,7 +128,7 @@ def create_room(request):
 
 def join_room(request):
     """
-    Join a room.
+    Join a room using valid credentials.
 
     Args:
         request (HttpRequest): The HTTP request object.
@@ -135,7 +162,7 @@ def leave_room(request):
 @room_required
 def room(request):
     """
-    Render the room view.
+    Render the room view. If room is not found in the database, it means room has already been expired.
 
     Args:
         request (HttpRequest): The HTTP request object.
@@ -148,21 +175,27 @@ def room(request):
         <HttpResponse>
     """
     rname = request.session["rname"]
-    room = Room.objects.get(rname=rname)
+    try:
+        room = Room.objects.get(rname=rname)
+    except ObjectDoesNotExist:
+        request.session.flush()
+        return HttpResponse("Room has expired!")
     files = File.objects.filter(room=room)
     return render(request, "room.html", {"files": files, "rname": rname})
 
 
 def delete_s3_objects(files):
     """
-    Delete S3 objects.
+    Delete S3 objects(files belonging to a particular room).
 
     Args:
           files (QuerySet): The files to be deleted.
 
     Returns:
-          bool: True if the deletion is successful, False otherwise.
+          bool: True if there are no files in a room. True if there are files in room and the deletion is successful, False otherwise.
     """
+    if len(files) == 0:
+        return True
     s3 = get_s3_client()
     s3.delete_objects(
         Bucket=settings.AWS_STORAGE_BUCKET_NAME,
@@ -173,8 +206,9 @@ def delete_s3_objects(files):
     )
     return True
 
-@room_required
-def delete_room(request):
+
+@app.task
+def delete_room(room_name):
     """
     Delete the current room with all the files belonging to it.
 
@@ -185,15 +219,14 @@ def delete_room(request):
         Union[HttpResponse, HttpResponseRedirect]: The HTTP response.
 
     """
-    room = Room.objects.get(rname=request.session["rname"])
+    room = Room.objects.get(rname=room_name)
     files = File.objects.filter(room=room)
     if delete_s3_objects(files):
         files.delete()
         room.delete()
-        request.session.flush()
-        return redirect("/")
+        return "Files deleted succesfully"
     else:
-        return HttpResponse("Files deletion failed")
+        return "Files deletion failed"
 
 
 @room_required
@@ -259,7 +292,11 @@ def download_file(request, file_name):
         Union[HttpResponse, HttpResponseRedirect]: The HTTP response.
 
     """
-    requested_file = File.objects.get(file=file_name)
+    try:
+        requested_file = File.objects.get(file=file_name)
+    except ObjectDoesNotExist:
+        request.session.flush()
+        return HttpResponse("Room has been expired")
 
     # validating if the user requesting the file is from the same room where the file is available
     if requested_file.room.rname == request.session["rname"]:
