@@ -41,7 +41,7 @@ implement a user-friendly, minimal and responsive interface where users can crea
 
  ### Cloud Technologies
 **AWS S3** :- Utilized S3 buckets to store user uploaded files.These files are securely stored and can only be accessed through presigned URLs. These URLs are generated on-demand when a user initiates a download. To enhance security and prevent unauthorized access, these URLs are designed to expire swiftly - just 10 seconds after the download button is clicked.  
-Files are also directly transferred from Amazon S3 to user. This bypasses the Django server entirely during the file transfer process, significantly reducing the server load.
+Files also directly transferred from Amazon S3 to user. This bypasses the Django server entirely during the file transfer process, significantly reducing the server load.
 
 **AWS EC2** :- Lastly, I deployed the application on AWS EC2, ensuring its accessibility over the internet.
 

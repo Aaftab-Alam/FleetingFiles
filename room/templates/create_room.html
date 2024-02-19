@@ -14,17 +14,37 @@
     </head>     
     <body class="login">
         <div>
-            <form method="POST" action="{% url 'create_room' %}">
+            <form method="POST" action="{% url 'create_room' %}" onsubmit="return validateform()">
                 {% csrf_token %}
                 <h1 class="fleet">📁Fleeting Files</h1>
                 <p style="color:red; font-family:'Open Sans', sans-serif; font-size: 12px;">The room will be automatically deleted in 30 minutes with all the files belonging to it !!!</p>
                 {% for message in messages %}
                 <p style="color:red; font-family:'Open Sans', sans-serif; font-size: 12px;">{{ message }}</p>
                 {% endfor %}
-                <input class="rname" placeholder="Room Name" name="rname" type="text"><br/>
-                <input class="rpass" placeholder="Room Password" name="rpass" type="password"><br/>
+                <p style="color:red; font-family:'Open Sans', sans-serif; font-size: 12px;" id="error_message" style="color:red;"></p>
+                <input id="name" class="rname" placeholder="Room Name" name="rname" type="text" oninput="validateform()" required><br/>
+                <input id="password" class="rpass" placeholder="Room Password" name="rpass" type="password" oninput="validateform()" required><br/>
+                <p id="error_message_password" style="color:red;"></p>
                 <button type="submit">Create</button>
             </form>
         </div>
+        <script>
+            function validateform() {
+            var name = document.getElementById("name").value;
+            var password = document.getElementById("password").value;
+            var error_message = document.getElementById("error_message");
+
+            if (name.includes(' ')) {
+                error_message.innerText = "Name should not contain spaces.";
+                return false;
+            }  else if (password.includes(' ')) {
+                error_message.innerText = "Password should not contain spaces.";
+                return false;
+            } else {
+                error_message.innerText = "";
+                return true;
+            }
+        }
+        </script>
     </body>     
 </html>
