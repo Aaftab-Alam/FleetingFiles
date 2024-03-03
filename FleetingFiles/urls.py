@@ -17,10 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-from FleetingFiles import views 
+from FleetingFiles import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/myadmin', admin.site.urls),
     path('',views.home, name="home"),
     path('room/',include('room.urls')),
 ]
+
+urlpatterns += staticfiles_urlpatterns()

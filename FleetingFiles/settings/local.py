@@ -11,8 +11,11 @@ ALLOWED_HOSTS = ["127.0.0.1"]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# Aws configuration
+INSTALLED_APPS += [
+    "whitenoise.runserver_nostatic",  # to use whitenoise in development envirnoment
+]
 
+# Aws configuration
 AWS_ACCESS_KEY_ID = os.getenv("access_key")
 AWS_SECRET_ACCESS_KEY = os.getenv("secret_key")
 
@@ -32,11 +35,12 @@ STORAGE = {
     },
     # Static file management
     "staticfiles": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
-STATIC_URL = "/static/"
+STATIC_URL = "/staticfiles/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "FleetingFiles/static"),
     os.path.join(BASE_DIR, "room/static"),
