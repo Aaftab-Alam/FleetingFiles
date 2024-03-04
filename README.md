@@ -21,7 +21,7 @@ I needed a simpler, secure and faster solution. This was where the idea for Flee
 https://github.com/Aaftab-Alam/FleetingFiles/assets/100439561/297d562b-b550-41c1-b8c8-10d6d6c7c073
 
 ## Live Demo
-https://bit.ly/FleetingFiles
+http://13.200.83.177:8000/
 
 
 ## Tech Stack
@@ -38,6 +38,8 @@ implement a user-friendly, minimal and responsive interface where users can crea
 **Celery** :- Integrated Celery(a powerful asynchronous job queue), to automatically delete the room after 30 minutes post-creation. It runs in the background and takes off the load from our django app.
 
 **Redis** :- Used as a message broker, to facilitate the communication between Django application and Celery Worker.
+
+**Whitenoise**:- Used to deliver static content as Django server could not serve static files in production environment.
 
  ### Cloud Technologies
 **AWS S3** :- Utilized S3 buckets to store user uploaded files.These files are securely stored and can only be accessed through presigned URLs. These URLs are generated on-demand when a user initiates a download. To enhance security and prevent unauthorized access, these URLs are designed to expire swiftly - just 10 seconds after the download button is clicked.  
@@ -60,7 +62,7 @@ Files also directly transferred from Amazon S3 to user. This bypasses the Django
 
 ## Run Locally
 
-To get this project up and running you should start by having Python installed on your computer. It's advised you create a virtual environment to store your projects dependencies separately. You can install virtualenv with
+To get this project up and running you should start by installing Python on your computer. It's advised you create a virtual environment to store the dependencies of your project separately. You can install virtualenv with
 
 ```bash
   pip install virtualenv
@@ -72,7 +74,7 @@ Clone or download this repository and open it in your editor of choice. In a ter
   virtualenv env
 ```
 
-That will create a new folder env in your project directory. Next activate it with this command on windows:
+That will create a new folder env in your project directory. Next, activate it with this command on windows:
 
 ```bash
   env\Scripts\activate
@@ -90,6 +92,13 @@ Make necessary migrations
 ```bash
   python manage.py migrate
 ```
+Now you need to create a ***.env*** file in the base directory and configure these environment variables:-  
+***access_key***=YOUR_AMAZON_ACCESS_KEY  
+***secret_key***=YOUR_AMAZON_SECRET_KEY  
+***bucket_name***=YOUR_S3_BUCKET_NAME  
+***django_secret_key***=YOUR_DJANGO_SECRET_KEY  
+***DJANGO_SETTINGS_MODULE***=FleetingFiles.settings.local  
+
 Now you can run the project with this command
 ```bash
   python manage.py runserver
