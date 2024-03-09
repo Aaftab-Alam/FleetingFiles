@@ -1,96 +1,130 @@
 {% load static %}
-<!DOCTYPE html> 
-<html lang="en"> 
-    <head> 
-        <meta charset="utf-8"> 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1"> 
-        <meta name="description" content=""> 
-        <meta name="author" content=""> 
-        <title>Room</title>         
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        <link rel="icon" type="image/x-icon" href="{% static 'images/icon.ico' %}">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik+Glitch&display=swap">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap">
-    </head>     
-    <body style="margin: 0px;">
-        <div class="container">
-            <div class="back-container">
-                <header>
-                    <div id="dropdownMenu" class="dropdown">
-                        <div onclick="toggleDropdown()" style="font-size:25px;color:white;position:absolute;left: 11px;top:11px;">☰</div>
-                        <div id="dropdownContent" class="dropdown-content" style="display: none;">
-                            <h3 >🏠{{ rname }}</h3>
-                            <a href="./leave_room" style="text-decoration: none;"><h3 style="color:#fa3a3a;" >Leave Room</h3></a>
-                        </div>
-                    </div>
-                    <h1 class="fleet" style="color: white; display: inline-block;">📁Fleeting Files</h1>
-                    <div class="navigation">
-                        <h3 >🏠{{ rname }}</h3>
-                        <a href="./leave_room" style="text-decoration: none;"><h3 style="color:#fa3a3a;" >Leave Room</h3></a>
-                    </div>
-                </header>
-                <div class="upload-button" style="position: fixed;">
-                    <button onclick="myFunction()">Upload</button>
-                </div>
-                <div style="margin: 12px;">
-                    <h3 style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #5b5b5b;">Available Files</h3>
-                    <hr>
-                    {% if files|length == 0 %}
-                    <div style="position: absolute;font-family: 'Open Sans', sans-serif;color: #5b5b5b;top:50%;width: 96%;text-align: center;"> No files Available</div>
-                    {% else %}
-                    <div style="padding-left: 8px; padding-right: 8px;">
-                        <div class="file-container">
-                            {% for item in files %}
-                                <a href= " media/file/{{ item.file.name }} " style="text-decoration: none;">
-                                <div class="file-display">
-                                    <img src="{% static 'images/file_icon.png' %}">
-                                    {% if item.file.name|length <= 20 %}
-                                    <p>{{ item.file.name }}</p>
-                                    {% else %}
-                                    <p><marquee width="150px" scrollamount="3">{{ item.file.name }}</marquee></p>
-                                    {% endif %}
-                                </div>
-                                </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
 
-            <div class="front-container" id="fcont" style="display: none;">
-                <div class="upload-main">
-                    <label id="cross" onclick="myFunction()">x</label>
-                <form  method="POST" action="{% url 'upload' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    
-                    
-                        <input type="file" name="document">
-                        <button type="submit">Upload</button>
-                </form>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Room</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icon.ico' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik+Glitch&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee&display=swap">
+</head>
+
+<body style="margin: 0px;">
+    <div class="container">
+        <div class="back-container">
+            <header>
+                <div id="dropdownMenu" class="dropdown">
+                    <div onclick="toggleDropdown()"
+                        style="font-size:25px;color:white;position:absolute;left: 11px;top:11px;">☰</div>
+                    <div id="dropdownContent" class="dropdown-content" style="display: none;">
+                        <h3>🏠{{ rname }}</h3>
+                        <a href="./leave_room" style="text-decoration: none;">
+                            <h3 style="color:#fa3a3a;">Leave Room</h3>
+                        </a>
+                    </div>
+                </div>
+                <h1 class="fleet" style="color: white; display: inline-block;">📁Fleeting Files</h1>
+                <div class="navigation">
+                    <h3>🏠{{ rname }}</h3>
+                    <a href="./leave_room" style="text-decoration: none;">
+                        <h3 style="color:#fa3a3a;">Leave Room</h3>
+                    </a>
+                </div>
+            </header>
+            <div class="upload-button" style="position: fixed;">
+                <button onclick="myFunction()">Upload</button>
             </div>
+            <div style="margin: 12px;">
+                <h3 style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #5b5b5b;">
+                    Available Files</h3>
+                <hr>
+                {% if files|length == 0 %}
+                <div
+                    style="position: absolute;font-family: 'Open Sans', sans-serif;color: #5b5b5b;top:50%;width: 96%;text-align: center;">
+                    No files Available</div>
+                {% else %}
+                <div style="padding-left: 8px; padding-right: 8px;">
+                    <div class="file-container">
+                        {% for item in files %}
+                        <a href=" media/file/{{ item.file.name }} " style="text-decoration: none;">
+                            <div class="file-display">
+                                <img src="{% static 'images/file_icon.png' %}">
+                                {% if item.file.name|length <= 20 %} <p>{{ item.file.name }}</p>
+                                    {% else %}
+                                    <p>
+                                        <marquee width="150px" scrollamount="3">{{ item.file.name }}</marquee>
+                                    </p>
+                                    {% endif %}
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
-        <script>
-            function myFunction() {
+
+        <div class="front-container" id="fcont" style="display: none;">
+            <div class="upload-main">
+                <label id="cross" onclick="myFunction()">x</label>
+                <form method="POST" action="{% url 'upload' %}" enctype="multipart/form-data"
+                    onsubmit="return Filevalidation()">
+                    {% csrf_token %}
+
+
+                    <input type="file" id="file" name="document" onchange="Filevalidation()">
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function myFunction() {
             var x = document.getElementById("fcont");
             if (x.style.display == "none") {
                 x.style.display = "flex";
             } else {
                 x.style.display = "none";
             }
+        }
+        function toggleDropdown() {
+            var dropdownContent = document.getElementById("dropdownContent");
+            if (dropdownContent.style.display === "none") {
+                dropdownContent.style.display = "block";
+            } else {
+                dropdownContent.style.display = "none";
             }
-            function toggleDropdown() {
-    var dropdownContent = document.getElementById("dropdownContent");
-    if (dropdownContent.style.display === "none") {
-        dropdownContent.style.display = "block";
-    } else {
-        dropdownContent.style.display = "none";
-    }
-}
+        }
+        Filevalidation = () => {
+            const fi = document.getElementById('file');
+            // Check if any file is selected.
+            if (fi.files.length > 0) {
+                for (const i = 0; i <= fi.files.length - 1; i++) {
 
-        </script>
-    </body>     
+                    const fsize = fi.files.item(i).size;
+                    const file = Math.round((fsize / 1024));
+                    // The size of the file.
+                    if (file >= 5120) {
+                        alert(
+                            "File too Big, please select a file less than 5mb");
+                        return false;
+                    }
+                    else{
+                        return true;
+                    }
+                }
+            }
+        }
+    </script>
+
+    </script>
+</body>
+
 </html>

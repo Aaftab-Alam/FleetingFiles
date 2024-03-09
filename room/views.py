@@ -247,8 +247,8 @@ def upload(request):
     request_file = request.FILES.get("document")
     if not request_file:
         return HttpResponse("No file found")
-    if request_file.size > 104857600:  # File must not be greater than 100MB
-        return HttpResponse('<h3 align="center" style="font-family:Open Sans">File size exceeds the limit of 100MB.</h3>')
+    if request_file.size > 5242880 :  # File must not be greater than 5MB
+        return HttpResponse('<h3 align="center" style="font-family:Open Sans">File size exceeds the limit of 5MB.</h3>')
 
     room = Room.objects.get(rname=request.session["rname"])
     file = File(room=room, file=request_file)
