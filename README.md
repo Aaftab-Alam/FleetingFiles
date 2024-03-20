@@ -3,6 +3,8 @@
 
 Fleeting Files is a file sharing platform that allows users to create or join existing rooms and share files with each other. The aim of this project is to provide a fast and easy way to share files among multiple users.
 
+## Live Demo
+https://bit.ly/fleetingfiles
 
 ## The idea
 
@@ -23,9 +25,6 @@ I needed a simpler, secure and faster solution. This was where the idea for Flee
 
 ## Example Usage
 https://github.com/Aaftab-Alam/FleetingFiles/assets/100439561/297d562b-b550-41c1-b8c8-10d6d6c7c073
-
-## Live Demo
-http://13.200.83.177:8000/
 
 
 ## Tech Stack
